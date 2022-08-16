@@ -31,11 +31,12 @@
 </div>
 <div class="mainContent">
   <nz-card class="content">
-    <nz-page-header nzTitle="Title" nzSubtitle="This is a subtitle"> </nz-page-header>
+    <nz-page-header [nzTitle]="byRoutertoName()"> </nz-page-header>
     <router-outlet></router-outlet>
   </nz-card>
 </div>
 
 <ng-template #Content>
+  <div style="width: 100px; padding: 1rem" (click)="toPerson()">个人中心</div>
   <div style="width: 100px; padding: 1rem" (click)="loginOut()">退出登录</div>
 </ng-template>

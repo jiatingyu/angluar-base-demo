@@ -9,7 +9,7 @@ import { CommonService } from 'src/app/services/common.service'
 })
 export class SectorComponent implements OnInit {
   constructor(private commonService: CommonService, private message: NzMessageService) {}
-
+  listOfData = []
   async ngOnInit() {
     try {
       let data = await this.commonService.getSectionList({})
