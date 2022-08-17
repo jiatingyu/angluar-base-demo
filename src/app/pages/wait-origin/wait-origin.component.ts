@@ -14,6 +14,7 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
   }
   dataSet = []
   loading = false
+  downloading = false
   pageObj = {
     page: 1,
     size: 1,
@@ -37,7 +38,9 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
   async loadData() {
     try {
       this.loading = true
-      let { meta, data } = await this.commonService.getUploadHistory()
+      let { page, size } = this.pageObj
+      let obj = { page, size }
+      let { meta, data } = await this.commonService.getUploadHistory(obj)
       if (!meta.success) {
         this.message.warning(meta.message)
         return
@@ -75,6 +78,37 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
     let [message] = await this.requestHelper(this.commonService.deleteUpload(id))
     if (!message) {
       this.loadData()
+    }
+  }
+  async downloadFile() {
+    this.downloading = true
+    let data = await this.commonService.downloadFile()
+    try {
+      let file = data.headers['content-disposition'].match(/fileName=(.*)/)
+      let fileName = (file && file[1]) || '未命名文件'
+      this.downloading = false
+      const blob = new Blob([data.data], { type: 'application/octet-stream' })
+      // 创建新的URL并指向File对象或者Blob对象的地址
+      const blobURL = window.URL.createObjectURL(blob)
+      // 创建a标签，用于跳转至下载链接
+      const tempLink = document.createElement('a')
+      tempLink.style.display = 'none'
+      tempLink.href = blobURL
+      tempLink.setAttribute('download', decodeURI(fileName))
+      // 兼容：某些浏览器不支持HTML5的download属性
+      if (typeof tempLink.download === 'undefined') {
+        tempLink.setAttribute('target', '_blank')
+      }
+      // 挂载a标签
+      document.body.appendChild(tempLink)
+      tempLink.click()
+      document.body.removeChild(tempLink)
+      // 释放blob URL地址
+      window.URL.revokeObjectURL(blobURL)
+    } catch (error) {
+      console.log('下载出错', error.message)
+    } finally {
+      this.downloading = false
     }
   }
 }

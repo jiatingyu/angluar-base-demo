@@ -5,7 +5,7 @@
   <p class="ant-upload-text">点击或拖拽文件到这个区域完成上传</p>
   <p class="ant-upload-hint">支持一个或多个文件上传，仅支持excel文件上传</p>
 </nz-upload>
-<nz-card nzTitle="历史列表">
+<nz-card [nzTitle]="cardHeader">
   <nz-table
     #basicTable
     [nzData]="dataSet"
@@ -60,3 +60,14 @@
     </div>
   </ng-template>
 </nz-card>
+<ng-template #cardHeader>
+  <div style="display: flex; justify-content: space-between">
+    <div>历史列表</div>
+    <div>
+      <span style="color: darkgray; font-size: 13px; margin-right: 1rem">模板会根据用户角色自动选择下载</span
+      ><button [nzLoading]="downloading" nz-button nzType="primary" (click)="downloadFile()">
+        <i nz-icon nzType="cloud-download" nzTheme="outline"></i>上传模板下载
+      </button>
+    </div>
+  </div>
+</ng-template>

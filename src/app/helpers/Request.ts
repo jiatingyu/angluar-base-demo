@@ -29,6 +29,12 @@ class Request {
 
     this.request.interceptors.response.use(
       config => {
+        console.log(config)
+        let contentType = config.headers['content-type'].match(/(x-download)/)
+        if (contentType && contentType[1]) {
+          // 说明是下载
+          return config
+        }
         if (config.status === 200) {
           return config.data
         }

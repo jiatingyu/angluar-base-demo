@@ -62,15 +62,16 @@ const routes: Routes = [
         path: 'system/person',
         component: PersonComponent,
       },
-      {
-        path: 'analysis',
-        component: AnalysisComponent,
-      },
+
       {
         path: 'messageTemplate',
         component: MessageTemplateComponent,
       },
     ],
+  },
+  {
+    path: 'analysis',
+    component: AnalysisComponent,
   },
 ]
 

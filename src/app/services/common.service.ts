@@ -25,8 +25,12 @@ export class CommonService {
       },
     })
   }
-  getUploadHistory(): Promise<IResponsePage<any>> {
-    return this.request.get('/log/upload', {})
+  // 下载文件
+  downloadFile() {
+    return this.request.get('/upload')
+  }
+  getUploadHistory(params): Promise<IResponsePage<any>> {
+    return this.request.get('/log/upload', { params })
   }
   deleteUpload(id) {
     return this.request.delete(`/log/${id}`)

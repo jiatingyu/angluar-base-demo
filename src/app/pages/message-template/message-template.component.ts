@@ -20,11 +20,11 @@ export class MessageTemplateComponent extends ResultHelper implements OnInit {
   }
 
   async loadData() {
-    let [err, temps] = await this.requestHelper(this.mainService.getMessageTemp())
+    let [err, temps] = await this.requestHelper(this.mainService.getMessageTemp(), false)
     let [err1, logs] = await this.requestHelper(this.mainService.getMessageLog(), false)
     if (!err && !err1) {
       this.Templates = temps
-      this.Logs = logs
+      this.Logs = logs.content
     }
   }
 }
