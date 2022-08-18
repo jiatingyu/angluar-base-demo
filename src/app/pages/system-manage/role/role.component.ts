@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { NzMessageService, NzTreeComponent } from 'ng-zorro-antd'
 import { ResultHelper } from 'src/app/helpers/ResultHelper'
+import { SystemHelper } from 'src/app/helpers/SystemHelper'
 import { SystemService } from 'src/app/services/system.service'
 
 @Component({
@@ -16,7 +17,7 @@ export class RoleComponent extends ResultHelper implements OnInit {
   defaultChecked = []
   @ViewChild('nzTreeComponent', { static: false }) nzTreeComponent: NzTreeComponent
   resources = []
-  constructor(private fb: FormBuilder, message: NzMessageService, private system: SystemService) {
+  constructor(private fb: FormBuilder, message: NzMessageService, private system: SystemService, private systemHelper: SystemHelper) {
     super(message)
   }
   submitForm() {}
@@ -31,25 +32,9 @@ export class RoleComponent extends ResultHelper implements OnInit {
     let [err, resouceData] = await this.requestHelper(this.system.getResources(), false)
     let [err1, roleData] = await this.requestHelper(this.system.getRoles())
     if (!err && !err1) {
-      this.resources = this.cascadeResource(resouceData.content || [])
+      this.resources = this.systemHelper.cascadeResource(resouceData.content || [])
       this.dataSet = roleData.content
     }
-  }
-  cascadeResource(data) {
-    let map = new Map()
-    data.forEach(item => {
-      item['key'] = item.id
-      item['title'] = item.name
-      if (item.parentId == null && !map.has(item.id)) {
-        map.set(item.id, item)
-      }
-      if (item.parentId) {
-        let children = map.get(item.parentId).children
-        children ? children.push(item) : (children = [item])
-        map.get(item.parentId).children = children
-      }
-    })
-    return [...map.values()]
   }
   dataSet = []
   add() {

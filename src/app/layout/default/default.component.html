@@ -6,8 +6,8 @@
   <div nz-col nzSpan="16" [nzXl]="17">
     <ul nz-menu nzMode="horizontal" (nzClick)="menuClick($event)">
       <ng-container *ngFor="let menu of menus">
-        <li nz-menu-item [nzSelected]="hasSelect(menu.router)" *ngIf="!menu.children">
-          <a [routerLink]="menu.router">
+        <li nz-menu-item [nzSelected]="hasSelect(menu.url)" *ngIf="!menu.children">
+          <a [routerLink]="menu.url">
             <i nz-icon [nzType]="menu.icon" nzTheme="outline"></i>
             {{ menu.name }}
           </a>
@@ -15,7 +15,7 @@
         <li nz-submenu [nzTitle]="menu.name" [nzIcon]="menu.icon" *ngIf="menu.children">
           <ul>
             <li nz-menu-item *ngFor="let child of menu.children">
-              <a [routerLink]="child.router">
+              <a [routerLink]="child.url">
                 {{ child.name }}
               </a>
             </li>
@@ -26,7 +26,7 @@
   </div>
   <div nz-col nzSpan="4" class="manage_row" nz-popover [nzPopoverContent]="Content">
     <nz-avatar [nzText]="'M'" nzSize="large" style="vertical-align: middle"></nz-avatar>
-    管理员
+    {{ role.roleName + ':' + userInfo?.userName || '管理员' }}
   </div>
 </div>
 <div class="mainContent">

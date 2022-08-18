@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
+import { NzMessageService } from 'ng-zorro-antd'
+import { getCurrentUser, LocalStorageService } from 'src/app/helpers/local-storage.service'
+import { SystemHelper } from 'src/app/helpers/SystemHelper'
 import { IMenus, menus } from 'src/app/models/menus'
+import { IResource, IRole, IUserInfo } from 'src/app/models/systems'
 
 @Component({
   selector: 'app-default',
@@ -8,11 +12,37 @@ import { IMenus, menus } from 'src/app/models/menus'
   styleUrls: ['./default.component.less'],
 })
 export class DefaultComponent implements OnInit {
-  constructor(private router: Router) {
-    console.log(this.router.url)
-  }
+  constructor(private router: Router, private systemHelper: SystemHelper, private message: NzMessageService) {}
   menus: IMenus[] = menus
-  ngOnInit() {}
+  userInfo: IUserInfo
+  role: IRole
+  resouces: IResource[]
+  ngOnInit() {
+    // 获取用户信息
+    let user = getCurrentUser()
+    try {
+      if (user) {
+        // 当前登录用户
+        this.userInfo = user
+        // 当前角色
+        this.role = this.userInfo.roleVo
+        // 菜单资源
+        this.resouces = this.role.resourceVos
+        // 结构化
+        let data = this.systemHelper.cascadeResource(this.resouces)
+        if (data && data.length) {
+          this.menus = data
+        } else {
+          this.message.warning('无权操作')
+          this.router.navigateByUrl('/passport')
+        }
+      } else {
+        this.router.navigateByUrl('/passport')
+      }
+    } catch (error) {
+      this.router.navigateByUrl('/passport')
+    }
+  }
   loginOut() {
     window.localStorage.clear()
     this.router.navigate(['passport'])

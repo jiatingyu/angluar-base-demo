@@ -31,6 +31,7 @@ interface IUserInfo {
   status: number
   userName: string
   userType: number
+  roleVo?: IRole
 }
 
 interface IUser {

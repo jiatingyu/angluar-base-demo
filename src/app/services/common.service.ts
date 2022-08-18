@@ -18,10 +18,13 @@ export class CommonService {
       params,
     })
   }
-  uploadFile(data) {
+  uploadFile(data, progressFn?) {
     return this.request.post('/upload', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: event => {
+        progressFn && progressFn(event)
       },
     })
   }

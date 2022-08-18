@@ -101,7 +101,7 @@ export class AnalysisComponent extends ResultHelper implements OnInit {
     let [err, data] = await this.requestHelper(this.mainService.getMainAnalysis({ date }), false)
     let [err1, data1] = await this.requestHelper(this.mainService.getSectorAnalysis({ date }), false)
     if (!err && !err1) {
-      return [data[0], data1[0]]
+      return [data[0] || {}, data1[0] || {}]
     }
     this.isSpinning = false
     return null

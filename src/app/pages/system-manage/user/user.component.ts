@@ -40,7 +40,7 @@ export class UserComponent extends ResultHelper implements OnInit {
   }
   pageObj = {
     page: 1,
-    size: 1,
+    size: 10,
     total: 0,
   }
   async init() {

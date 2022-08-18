@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { NzMessageService, UploadChangeParam, UploadFile, UploadXHRArgs } from 'ng-zorro-antd'
+import { FileHelper } from 'src/app/helpers/FileHelper'
 import { ResultHelper } from 'src/app/helpers/ResultHelper'
 import { CommonService } from 'src/app/services/common.service'
 
@@ -9,7 +10,7 @@ import { CommonService } from 'src/app/services/common.service'
   styleUrls: ['./wait-origin.component.less'],
 })
 export class WaitOriginComponent extends ResultHelper implements OnInit {
-  constructor(message: NzMessageService, private commonService: CommonService) {
+  constructor(message: NzMessageService, private commonService: CommonService, private fileHelper: FileHelper) {
     super(message)
   }
   dataSet = []
@@ -17,7 +18,7 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
   downloading = false
   pageObj = {
     page: 1,
-    size: 1,
+    size: 10,
     total: 0,
   }
   ngOnInit() {
@@ -58,9 +59,18 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
     console.log(fileArgs)
     let formData = new FormData()
     formData.append('files', fileArgs.file as any)
-    let [message] = await this.requestHelper(this.commonService.uploadFile(formData))
+    const progressFn = event => {
+      let progress = event.loaded / event.total
+      console.log('上传进度：' + progress * 100 + '%')
+      fileArgs.onProgress(event, fileArgs.file)
+    }
+    let [message] = await this.requestHelper(this.commonService.uploadFile(formData, progressFn))
+
     if (!message) {
       this.loadData()
+      fileArgs.onSuccess(null, fileArgs.file, null)
+    } else {
+      fileArgs.onError(null, fileArgs.file)
     }
   }
   handleChange({ file, fileList }: UploadChangeParam): void {
@@ -69,9 +79,9 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
       console.log(file, fileList)
     }
     if (status === 'done') {
-      this.message.success(`${file.name} file uploaded successfully.`)
+      this.message.success(`${file.name} 文件成功上传.`)
     } else if (status === 'error') {
-      this.message.error(`${file.name} file upload failed.`)
+      this.message.error(`${file.name} 文件上传失败.`)
     }
   }
   async delete(id: number) {
@@ -84,27 +94,7 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
     this.downloading = true
     let data = await this.commonService.downloadFile()
     try {
-      let file = data.headers['content-disposition'].match(/fileName=(.*)/)
-      let fileName = (file && file[1]) || '未命名文件'
-      this.downloading = false
-      const blob = new Blob([data.data], { type: 'application/octet-stream' })
-      // 创建新的URL并指向File对象或者Blob对象的地址
-      const blobURL = window.URL.createObjectURL(blob)
-      // 创建a标签，用于跳转至下载链接
-      const tempLink = document.createElement('a')
-      tempLink.style.display = 'none'
-      tempLink.href = blobURL
-      tempLink.setAttribute('download', decodeURI(fileName))
-      // 兼容：某些浏览器不支持HTML5的download属性
-      if (typeof tempLink.download === 'undefined') {
-        tempLink.setAttribute('target', '_blank')
-      }
-      // 挂载a标签
-      document.body.appendChild(tempLink)
-      tempLink.click()
-      document.body.removeChild(tempLink)
-      // 释放blob URL地址
-      window.URL.revokeObjectURL(blobURL)
+      this.fileHelper.downLoad(data)
     } catch (error) {
       console.log('下载出错', error.message)
     } finally {

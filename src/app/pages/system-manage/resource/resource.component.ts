@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { NzMessageService } from 'ng-zorro-antd'
 import { ResultHelper } from 'src/app/helpers/ResultHelper'
+import { SystemHelper } from 'src/app/helpers/SystemHelper'
 import { IResource } from 'src/app/models/systems'
 import { SystemService } from 'src/app/services/system.service'
 interface TreeNodeInterface {
@@ -25,7 +26,7 @@ export class ResourceComponent extends ResultHelper implements OnInit {
   resourceVisible: boolean = false
   // 父级资源
   parentResources = []
-  constructor(private fb: FormBuilder, private system: SystemService, message: NzMessageService) {
+  constructor(private fb: FormBuilder, private system: SystemService, message: NzMessageService,private systemHelper : SystemHelper) {
     super(message)
   }
   submitForm() {}
@@ -42,7 +43,7 @@ export class ResourceComponent extends ResultHelper implements OnInit {
     this.resourceLoading = true
     try {
       let { data } = await this.system.getResources()
-      this.listOfMapData = this.cascadeResource(data.content || [])
+      this.listOfMapData = this.systemHelper.cascadeResource(data.content || [])
       // 数据变成级联结构
 
       this.parentResources = this.listOfMapData.map(item => ({ id: item.id, name: item.name }))
@@ -55,20 +56,7 @@ export class ResourceComponent extends ResultHelper implements OnInit {
       this.resourceLoading = false
     }
   }
-  cascadeResource(data) {
-    let map = new Map()
-    data.forEach(item => {
-      if (item.parentId == null && !map.has(item.id)) {
-        map.set(item.id, item)
-      }
-      if (item.parentId) {
-        let children = map.get(item.parentId).children
-        children ? children.push(item) : (children = [item])
-        map.get(item.parentId).children = children
-      }
-    })
-    return [...map.values()]
-  }
+  
   selectedRow = { id: 0, name: '' }
   selectRow(row) {
     // 只有第一层才能选择

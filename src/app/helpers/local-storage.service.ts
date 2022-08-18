@@ -27,5 +27,8 @@ export class LocalStorageService {
 }
 
 let storage = new LocalStorageService()
+const getCurrentUser = ()=>{
+  return storage.getObject('userInfo')
+}
 
-export { storage }
+export { storage,getCurrentUser }

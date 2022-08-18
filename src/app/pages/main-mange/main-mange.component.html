@@ -1,5 +1,18 @@
-<nz-card>
-  <nz-table #basicTable [nzData]="listOfData">
+<form nz-form [formGroup]="searchForm" [nzLayout]="'inline'">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="account">筛选时间</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-date-picker [(ngModel)]="date" formControlName="date"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button nzType="primary" (click)="loadData()">搜索</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<nz-card [nzTitle]="list">
+  <nz-table #basicTable [nzData]="listOfData" [nzSize]="'small'" [nzLoading]="loading">
     <thead>
       <tr>
         <th>监测对象</th>
@@ -25,10 +38,9 @@
   </nz-table>
   <ng-template #list>
     <div nz-row nzType="flex" nzJustify="space-between">
-      <div>结果展示</div>
+      <div>{{ dateFormart() }}-结果展示</div>
       <div>
-        <button nz-button nzType="primary"><i nz-icon nzType="folder" nzTheme="outline"></i>新增</button>
-        <button nz-button nzType="dashed"><i nz-icon nzType="fire" nzTheme="outline"></i>刷新</button>
+        <button nz-button nzType="primary" (click)="loadData()"><i nz-icon nzType="fire" nzTheme="outline"></i>刷新</button>
       </div>
     </div>
   </ng-template>
