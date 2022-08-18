@@ -19,23 +19,28 @@
   </nz-table>
 </nz-card>
 <nz-card nzTitle="模板发送历史">
-  <nz-table #logs [nzData]="Logs" [nzSize]="'middle'">
+  <nz-table
+    #logs
+    [nzData]="Logs"
+    [nzSize]="'middle'"
+    [nzFrontPagination]="false"
+    [nzTotal]="pageObj.total"
+    [nzPageSize]="pageObj.size"
+    [(nzPageIndex)]="pageObj.page"
+    (nzPageIndexChange)="historyData()"
+  >
     <thead>
       <tr>
+        <th>模板编码</th>
         <th>发送时间</th>
         <th>发送条数</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of logs.data">
-        <td>{{ data.name }}</td>
-        <td>{{ data.age }}</td>
-        <td>{{ data.address }}</td>
-        <td>
-          <a>Action 一 {{ data.name }}</a>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a>Delete</a>
-        </td>
+        <td>{{ data.templateCode }}</td>
+        <td>{{ data.sendDate }}</td>
+        <td>{{ data.total }}</td>
       </tr>
     </tbody>
   </nz-table>

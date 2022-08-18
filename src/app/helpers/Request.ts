@@ -29,7 +29,7 @@ class Request {
 
     this.request.interceptors.response.use(
       config => {
-        let contentType = config.headers['content-type'].match(/(x-download)/)
+        let contentType = config.headers['content-type'].match(/(ynd.ms-excel)/)
         if (contentType && contentType[1]) {
           // 说明是下载
           return config

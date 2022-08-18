@@ -30,7 +30,9 @@ export class CommonService {
   }
   // 下载文件
   downloadFile() {
-    return this.request.get('/upload')
+    return this.request.get('/upload', {
+      responseType: 'blob',
+    })
   }
   getUploadHistory(params): Promise<IResponsePage<any>> {
     return this.request.get('/log/upload', { params })

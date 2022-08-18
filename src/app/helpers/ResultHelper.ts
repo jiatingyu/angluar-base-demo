@@ -1,6 +1,3 @@
-import { Injectable } from '@angular/core'
-import { NzMessageService } from 'ng-zorro-antd'
-
 export class ResultHelper {
   message = null
   constructor(message) {
@@ -17,7 +14,7 @@ export class ResultHelper {
         return [meta.message]
       }
     } catch (error) {
-      this.message.error(error.message)
+      // this.message.error(error.message)
       return [error.message]
     }
   }

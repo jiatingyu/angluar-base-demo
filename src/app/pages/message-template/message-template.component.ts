@@ -18,13 +18,24 @@ export class MessageTemplateComponent extends ResultHelper implements OnInit {
   ngOnInit() {
     this.loadData()
   }
-
+  pageObj = {
+    page: 1,
+    size: 10,
+    total: 0,
+  }
   async loadData() {
     let [err, temps] = await this.requestHelper(this.mainService.getMessageTemp(), false)
-    let [err1, logs] = await this.requestHelper(this.mainService.getMessageLog(), false)
-    if (!err && !err1) {
-      this.Templates = temps
-      this.Logs = logs.content
+    this.historyData()
+    if (!err) {
+      this.Templates = temps.content || []
+    }
+  }
+  async historyData() {
+    let obj = { page: this.pageObj.page, size: this.pageObj.size }
+    let [err1, logs] = await this.requestHelper(this.mainService.getMessageLog(obj), false)
+    if (!err1) {
+      this.Logs = logs.content || []
+      this.pageObj.total = logs.totalElements
     }
   }
 }

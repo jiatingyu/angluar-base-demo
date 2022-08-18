@@ -34,13 +34,13 @@ export class DefaultComponent implements OnInit {
           this.menus = data
         } else {
           this.message.warning('无权操作')
-          this.router.navigateByUrl('/passport')
+          this.loginOut()
         }
       } else {
-        this.router.navigateByUrl('/passport')
+        this.loginOut()
       }
     } catch (error) {
-      this.router.navigateByUrl('/passport')
+      this.loginOut()
     }
   }
   loginOut() {

@@ -26,7 +26,7 @@
   </div>
   <div nz-col nzSpan="4" class="manage_row" nz-popover [nzPopoverContent]="Content">
     <nz-avatar [nzText]="'M'" nzSize="large" style="vertical-align: middle"></nz-avatar>
-    {{ role.roleName + ':' + userInfo?.userName || '管理员' }}
+    {{ role?.roleName + ':' + userInfo?.userName || '管理员' }}
   </div>
 </div>
 <div class="mainContent">

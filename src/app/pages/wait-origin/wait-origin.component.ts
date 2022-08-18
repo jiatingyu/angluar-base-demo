@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { NzMessageService, UploadChangeParam, UploadFile, UploadXHRArgs } from 'ng-zorro-antd'
 import { FileHelper } from 'src/app/helpers/FileHelper'
+import { getCurrentUser } from 'src/app/helpers/local-storage.service'
 import { ResultHelper } from 'src/app/helpers/ResultHelper'
+import { UserType } from 'src/app/models/systems'
 import { CommonService } from 'src/app/services/common.service'
 
 @Component({
@@ -26,9 +28,11 @@ export class WaitOriginComponent extends ResultHelper implements OnInit {
   }
   beforeUpload = (file: UploadFile, fileList: UploadFile[]): boolean => {
     console.log(file, fileList)
-    // if (/\.xls(x)?$/.test(file.name)) {
-    //   return true
-    // }
+    // 系统用户不能上传
+    if (getCurrentUser().userType === UserType.系统用户) {
+      this.message.warning('系统用户无权上传')
+      return false
+    }
     if (fileList.every(file => /\.xls(x)?$/.test(file.name))) {
       return true
     }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { AppComponent } from './app.component'
+import { AuthGuard } from './guards/auth.guard'
 import { DefaultComponent } from './layout/default/default.component'
 import { PassportComponent } from './layout/passport/passport.component'
 import { AnalysisComponent } from './pages/analysis/analysis.component'
@@ -18,7 +19,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'sector',
+    redirectTo: 'waitOrigin',
   },
   {
     path: 'passport',
@@ -33,6 +34,7 @@ const routes: Routes = [
   {
     path: '',
     component: DefaultComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'sector',
