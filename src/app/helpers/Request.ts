@@ -8,7 +8,7 @@ const baseURL = window['env']['url']
 @Injectable({
   providedIn: 'root',
 })
-class Request {
+export class Request {
   request: AxiosInstance
   notAuthRequest = [
     // 登录
@@ -52,5 +52,3 @@ class Request {
     )
   }
 }
-
-export default Request

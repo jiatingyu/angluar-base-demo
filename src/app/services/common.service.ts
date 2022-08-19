@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core'
 import { AxiosInstance } from 'axios'
-import Request from '../helpers/Request'
-import request from '../helpers/Request'
-import { IResponse, IResponsePage } from '../models/systems'
+import { Request } from '../helpers/Request'
+import { IResponsePage } from '../models/systems'
 
 @Injectable({
   providedIn: 'root',

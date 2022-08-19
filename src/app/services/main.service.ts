@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { AxiosInstance } from 'axios'
-import Request from '../helpers/Request'
+import { Request } from '../helpers/Request'
 import { IResponsePage, UserType } from '../models/systems'
 
 /** 主要业务 */
@@ -17,8 +17,8 @@ export class MainService {
   async getMessageTemp() {
     return this.request.get('/log/sms/template')
   }
-  async getMessageLog(params):Promise<IResponsePage<any>> {
-    return this.request.get('/log/smsLog',{params})
+  async getMessageLog(params): Promise<IResponsePage<any>> {
+    return this.request.get('/log/smsLog', { params })
   }
   // 获取系统信息
   async getSystemInfo(params = {}) {

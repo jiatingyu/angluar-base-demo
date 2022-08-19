@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { AxiosInstance } from 'axios'
-import Request from '../helpers/Request'
+import { Request } from '../helpers/Request'
 import { IResource, IResponse, IResponsePage, IRole, IUser, IUserInfo } from '../models/systems'
 
 /** 存储用户系统设置相关的 */
@@ -18,7 +18,7 @@ export class SystemService {
   }
 
   /** 用户相关 */
-  async getUsers(params={}): Promise<IResponsePage<IUser>> {
+  async getUsers(params = {}): Promise<IResponsePage<IUser>> {
     return this.request.get('/user', { params })
   }
   async getUser(id: number): Promise<IResponse<IUser>> {
