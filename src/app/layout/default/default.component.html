@@ -31,7 +31,9 @@
 </div>
 <div class="mainContent">
   <nz-card class="content">
-    <nz-page-header [nzTitle]="byRoutertoName()"> </nz-page-header>
+    <ng-container *ngIf="byRoutertoName()">
+      <nz-page-header [nzTitle]="byRoutertoName()"> </nz-page-header>
+    </ng-container>
     <router-outlet></router-outlet>
   </nz-card>
 </div>

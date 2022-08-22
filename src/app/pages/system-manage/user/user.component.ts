@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { NzMessageService } from 'ng-zorro-antd'
 import { Observable } from 'rxjs'
 import { ResultHelper } from 'src/app/helpers/ResultHelper'
+import { SystemHelper } from 'src/app/helpers/SystemHelper'
 import { IUser } from 'src/app/models/systems'
 import { SystemService } from 'src/app/services/system.service'
 
@@ -17,7 +18,12 @@ export class UserComponent extends ResultHelper implements OnInit {
   userVisible = false
   roles = []
   originFormValue = null
-  constructor(private fb: FormBuilder, message: NzMessageService, private system: SystemService) {
+  constructor(
+    private fb: FormBuilder,
+    message: NzMessageService,
+    private system: SystemService,
+    private systemHelper: SystemHelper
+  ) {
     super(message)
   }
   submitForm() {}
@@ -28,6 +34,7 @@ export class UserComponent extends ResultHelper implements OnInit {
       phone: [null, Validators.required],
       sex: ['男', Validators.required],
       roleId: [null, Validators.required],
+      deptId: [null, Validators.required],
       account: [null, Validators.required],
       password: [null, Validators.required],
       admin: [0],
@@ -48,10 +55,15 @@ export class UserComponent extends ResultHelper implements OnInit {
     let obj = { ...this.pageObj }
     let [err, users] = await this.requestHelper(this.system.getUsers(obj), false)
     let [err1, roles] = await this.requestHelper(this.system.getRoles(), false)
-    if (!err && !err1) {
+    let [err2, depts] = await this.requestHelper(this.system.getDetapartments(), false)
+    if (!err && !err1 && !err2) {
       this.dataSet = users.content
       this.pageObj.total = users.totalElements
       this.roles = roles.content.map(item => ({ id: item.id, roleName: item.roleName }))
+      this.departements = this.systemHelper.cascadeResource(depts.content || [])
+      this.departements.forEach(item => {
+        this.mapDepartments[item.id] = this.systemHelper.convertTreeToList(item)
+      })
     }
   }
   async loadData() {
@@ -108,4 +120,7 @@ export class UserComponent extends ResultHelper implements OnInit {
     let [err] = await this.requestHelper(this.system.deleteUser(id))
     !err && this.loadData()
   }
+  // 部门
+  departements = []
+  mapDepartments = {}
 }

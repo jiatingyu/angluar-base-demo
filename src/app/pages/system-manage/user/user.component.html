@@ -143,6 +143,21 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="deptId">部门</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select formControlName="deptId" id="deptId" nzShowSearch nzAllowClear nzPlaceHolder="选择部门">
+          <ng-container *ngFor="let data of departements">
+            <ng-container *ngFor="let item of mapDepartments[data.id]">
+              <nz-option nzCustomContent [nzLabel]="item.name" [nzValue]="item.id">
+                <!-- <span [style.margin-left]="item.level * 20 + 'px'"> {{ item.name }}</span></nz-option -->
+                <span [ngStyle]="{ 'margin-left': item.level * 20 + 'px' }"> {{ item.name }}</span></nz-option
+              >
+            </ng-container>
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="account">用户名</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <input nz-input formControlName="account" id="account" />

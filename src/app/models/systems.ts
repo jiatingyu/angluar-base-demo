@@ -3,6 +3,11 @@ enum UserType {
   重点管控用户,
   系统用户,
 }
+enum ColorType {
+  正常 = 1,
+  警告,
+  失败,
+}
 
 interface IResponse<T> {
   meta: { success: boolean; message: string }
@@ -63,5 +68,11 @@ interface IResource {
   parentId?: number
   url?: string
 }
+interface IDepartment {
+  id?: number
+  name: string
+  parentId?: number
+  description: string
+}
 
-export { IResponse, IRole, IUser, IResource, IResponsePage, IUserInfo, UserType }
+export { IResponse, IRole, IUser, IResource, IResponsePage, IUserInfo, UserType, IDepartment, ColorType }

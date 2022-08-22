@@ -8,6 +8,7 @@ import { AnalysisComponent } from './pages/analysis/analysis.component'
 import { MainMangeComponent } from './pages/main-mange/main-mange.component'
 import { MessageTemplateComponent } from './pages/message-template/message-template.component'
 import { LoginComponent } from './pages/passport/login/login.component'
+import { SectorDetailComponent } from './pages/sector/sector-detail/sector-detail.component'
 import { SectorComponent } from './pages/sector/sector.component'
 import { PersonComponent } from './pages/system-manage/person/person.component'
 import { ResourceComponent } from './pages/system-manage/resource/resource.component'
@@ -40,12 +41,14 @@ const routes: Routes = [
       {
         path: 'sector',
         component: SectorComponent,
-        outlet: 'left',
+      },
+      {
+        path: 'sector/detail',
+        component: SectorDetailComponent,
       },
       {
         path: 'mainManage',
         component: MainMangeComponent,
-        outlet: 'right',
       },
       {
         path: 'waitOrigin',

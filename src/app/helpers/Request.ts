@@ -4,7 +4,7 @@ import axios, { AxiosInstance } from 'axios'
 import { NzMessageService } from 'ng-zorro-antd'
 import { storage } from './local-storage.service'
 
-const baseURL = window['env']['url']
+export const baseURL = window['env']['url']
 @Injectable({
   providedIn: 'root',
 })
@@ -29,8 +29,9 @@ export class Request {
 
     this.request.interceptors.response.use(
       config => {
-        let contentType = config.headers['content-type'].match(/(ynd.ms-excel)/)
-        if (contentType && contentType[1]) {
+        // let contentType = config.headers['content-type'].match(/(ynd.ms-excel)/)
+        let cont = config.headers['content-disposition']
+        if (cont) {
           // 说明是下载
           return config
         }

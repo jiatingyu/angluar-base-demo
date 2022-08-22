@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { AxiosInstance } from 'axios'
 import { Request } from '../helpers/Request'
-import { IResource, IResponse, IResponsePage, IRole, IUser, IUserInfo } from '../models/systems'
+import { IDepartment, IResource, IResponse, IResponsePage, IRole, IUser, IUserInfo } from '../models/systems'
 
 /** 存储用户系统设置相关的 */
 @Injectable({
@@ -62,7 +62,7 @@ export class SystemService {
 
   /** 资源相关 */
   async getResources(): Promise<IResponsePage<IResource[]>> {
-    return this.request.get('/user/resource')
+    return this.request.get('/user/resource',{params:{ page:1,size:100}})
   }
   async getResouce(id: number) {
     return this.request.get('/user/resource', {
@@ -79,5 +79,26 @@ export class SystemService {
   }
   async deleteResource(id: number) {
     return this.request.delete(`/user/resource/${id}`)
+  }
+
+  // 部门相关
+  async getDetapartments(): Promise<IResponsePage<IDepartment[]>> {
+    return this.request.get('/dept',{params:{ page:1,size:100}})
+  }
+  async getDepartment(id: number) {
+    return this.request.get('/dept', {
+      params: { id },
+    })
+  }
+
+  async operationDepartment(data: IDepartment) {
+    return this.request.request({
+      url: '/dept',
+      method: data.id ? 'put' : 'post',
+      data,
+    })
+  }
+  async deleteDepartment(id: number) {
+    return this.request.delete(`/dept/${id}`)
   }
 }

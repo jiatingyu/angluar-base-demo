@@ -24,7 +24,8 @@ import { PersonComponent } from './pages/system-manage/person/person.component'
 import { RoleNamePipe } from './pipes/role-name.pipe'
 import { UserTypePipe } from './pipes/user-type.pipe'
 import { ShareModule } from './share/share.module';
-import { TestComponent } from './pages/test/test.component'
+import { TestComponent } from './pages/test/test.component';
+import { SectorDetailComponent } from './pages/sector/sector-detail/sector-detail.component'
 registerLocaleData(zh)
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ registerLocaleData(zh)
     AnalysisComponent,
     MessageTemplateComponent,
     TestComponent,
+    SectorDetailComponent,
     // PersonComponent,
     // RoleNamePipe,
     // UserTypePipe,

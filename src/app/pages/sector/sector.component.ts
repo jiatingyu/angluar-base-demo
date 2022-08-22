@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
+import { Router } from '@angular/router'
 import { NzMessageService } from 'ng-zorro-antd'
 import { DateHelper } from 'src/app/helpers/DateHelper'
 import { ResultHelper } from 'src/app/helpers/ResultHelper'
@@ -14,7 +15,13 @@ import { MainService } from 'src/app/services/main.service'
 export class SectorComponent extends ResultHelper implements OnInit {
   searchForm: FormGroup
   date = new Date()
-  constructor(private fb: FormBuilder, private mainService: MainService, message: NzMessageService, private dateHelper: DateHelper) {
+  constructor(
+    private fb: FormBuilder,
+    private mainService: MainService,
+    private router: Router,
+    message: NzMessageService,
+    private dateHelper: DateHelper
+  ) {
     super(message)
   }
   loading = false
@@ -46,5 +53,8 @@ export class SectorComponent extends ResultHelper implements OnInit {
   }
   dateFormart() {
     return this.dateHelper.formart(this.date)
+  }
+  checkUsers() {
+    this.router.navigate(['/sector/detail'])
   }
 }

@@ -5,12 +5,13 @@ import { ResultHelper } from 'src/app/helpers/ResultHelper'
 import { SystemHelper, TreeNodeInterface } from 'src/app/helpers/SystemHelper'
 import { IResource } from 'src/app/models/systems'
 import { SystemService } from 'src/app/services/system.service'
+
 @Component({
-  selector: 'app-resource',
-  templateUrl: './resource.component.html',
-  styleUrls: ['./resource.component.less'],
+  selector: 'app-department',
+  templateUrl: './department.component.html',
+  styleUrls: ['./department.component.less'],
 })
-export class ResourceComponent extends ResultHelper implements OnInit {
+export class DepartmentComponent extends ResultHelper implements OnInit {
   resourceLoading: boolean = false
   validateForm: FormGroup
   resourceVisible: boolean = false
@@ -29,21 +30,20 @@ export class ResourceComponent extends ResultHelper implements OnInit {
     this.validateForm = this.fb.group({
       parentId: [],
       name: [null, Validators.required],
-      icon: [],
-      url: [],
+      description: [],
     })
     this.loadData()
   }
   async loadData() {
     this.resourceLoading = true
     try {
-      let { data } = await this.system.getResources()
+      let { data } = await this.system.getDetapartments()
       this.listOfMapData = this.systemHelper.cascadeResource(data.content || [])
       // 数据变成级联结构
 
       this.parentResources = this.listOfMapData.map(item => ({ id: item.id, name: item.name }))
       this.listOfMapData.forEach(item => {
-        this.mapOfExpandedData[item.id] = this.convertTreeToList(item)
+        this.mapOfExpandedData[item.id] = this.systemHelper.convertTreeToList(item)
       })
     } catch (error) {
       console.dir(error)
@@ -68,9 +68,8 @@ export class ResourceComponent extends ResultHelper implements OnInit {
     this.editObj = item
     e.preventDefault()
     this.validateForm.get('parentId').setValue(item.parentId || null)
-    this.validateForm.get('icon').setValue(item.icon || null)
     this.validateForm.get('name').setValue(item.name || null)
-    this.validateForm.get('url').setValue(item.url || null)
+    this.validateForm.get('description').setValue(item.description || null)
     this.resourceVisible = true
   }
   add() {
@@ -89,13 +88,13 @@ export class ResourceComponent extends ResultHelper implements OnInit {
       if (this.editObj) {
         obj['id'] = this.editObj.id
       }
-      let data = await this.system.operationResouce(obj)
+      let data = await this.system.operationDepartment(obj)
       console.log(data)
       this.loadData()
     }
   }
   async delete(id) {
-    let [error] = await this.requestHelper(this.system.deleteResource(id))
+    let [error] = await this.requestHelper(this.system.deleteDepartment(id))
     if (!error) {
       this.loadData()
     }
@@ -123,38 +122,5 @@ export class ResourceComponent extends ResultHelper implements OnInit {
         return
       }
     }
-  }
-
-  convertTreeToList(root): TreeNodeInterface[] {
-    const stack: TreeNodeInterface[] = []
-    const array: TreeNodeInterface[] = []
-    const hashMap = {}
-    stack.push({ ...root, level: 0, expand: false })
-
-    while (stack.length !== 0) {
-      const node = stack.pop()!
-      this.visitNode(node, hashMap, array)
-      if (node.children) {
-        for (let i = node.children.length - 1; i >= 0; i--) {
-          stack.push({ ...node.children[i], level: node.level! + 1, expand: false, parent: node })
-        }
-      }
-    }
-
-    return array
-  }
-
-  visitNode(node: TreeNodeInterface, hashMap: { [id: string]: boolean }, array: TreeNodeInterface[]): void {
-    if (!hashMap[node.id]) {
-      hashMap[node.id] = true
-      array.push(node)
-    }
-  }
-  /** 原本的对象+目标的orderNum 来实现换位 */
-  async upAndDown(data, goal) {
-    console.log(data, goal)
-    let obj = { ...data, orderNum: goal.orderNum }
-    let [err] = await this.requestHelper(this.system.operationResouce(obj))
-    !err && this.loadData()
   }
 }
