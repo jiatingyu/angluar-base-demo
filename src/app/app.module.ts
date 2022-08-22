@@ -21,8 +21,10 @@ import { ResourceComponent } from './pages/system-manage/resource/resource.compo
 import { AnalysisComponent } from './pages/analysis/analysis.component'
 import { MessageTemplateComponent } from './pages/message-template/message-template.component'
 import { PersonComponent } from './pages/system-manage/person/person.component'
-import { RoleNamePipe } from './pipes/role-name.pipe';
+import { RoleNamePipe } from './pipes/role-name.pipe'
 import { UserTypePipe } from './pipes/user-type.pipe'
+import { ShareModule } from './share/share.module';
+import { TestComponent } from './pages/test/test.component'
 registerLocaleData(zh)
 @NgModule({
   declarations: [
@@ -33,16 +35,17 @@ registerLocaleData(zh)
     LoginComponent,
     MainMangeComponent,
     WaitOriginComponent,
-    UserComponent,
-    RoleComponent,
-    ResourceComponent,
+    // UserComponent,
+    // RoleComponent,
+    // ResourceComponent,
     AnalysisComponent,
     MessageTemplateComponent,
-    PersonComponent,
-    RoleNamePipe,
-    UserTypePipe,
+    TestComponent,
+    // PersonComponent,
+    // RoleNamePipe,
+    // UserTypePipe,
   ],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, NgZorroAntdModule],
+  imports: [BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, ShareModule],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],
 })

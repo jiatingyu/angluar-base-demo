@@ -13,6 +13,7 @@ import { PersonComponent } from './pages/system-manage/person/person.component'
 import { ResourceComponent } from './pages/system-manage/resource/resource.component'
 import { RoleComponent } from './pages/system-manage/role/role.component'
 import { UserComponent } from './pages/system-manage/user/user.component'
+import { TestComponent } from './pages/test/test.component'
 import { WaitOriginComponent } from './pages/wait-origin/wait-origin.component'
 
 const routes: Routes = [
@@ -39,30 +40,21 @@ const routes: Routes = [
       {
         path: 'sector',
         component: SectorComponent,
+        outlet: 'left',
       },
       {
         path: 'mainManage',
         component: MainMangeComponent,
+        outlet: 'right',
       },
       {
         path: 'waitOrigin',
         component: WaitOriginComponent,
       },
       {
-        path: 'system/user',
-        component: UserComponent,
-      },
-      {
-        path: 'system/role',
-        component: RoleComponent,
-      },
-      {
-        path: 'system/resource',
-        component: ResourceComponent,
-      },
-      {
-        path: 'system/person',
-        component: PersonComponent,
+        path: 'system',
+        // component: UserComponent,
+        loadChildren: () => import('./pages/system-manage/system-manage.module').then(mod => mod.SystemManageModule),
       },
 
       {
@@ -74,6 +66,15 @@ const routes: Routes = [
   {
     path: 'analysis',
     component: AnalysisComponent,
+  },
+  {
+    path: 'test',
+    component: TestComponent,
+    children: [
+      { path: 'sector', component: SectorComponent, outlet: 'left' },
+      { path: 'main', component: MainMangeComponent, outlet: 'right' },
+      { path: 'wait', component: WaitOriginComponent, outlet: 'right' },
+    ],
   },
 ]
 
