@@ -12,6 +12,11 @@
 <a [routerLink]="['/test', { outlets: { left: 'sector', right: null } }]">left</a> <nz-divider nzType="vertical"></nz-divider>
 <a [routerLink]="['/test', { outlets: { right: 'main' } }]">right</a> <nz-divider nzType="vertical"></nz-divider>
 <a [routerLink]="['/test', { outlets: { right: 'wait' } }]">wait</a> <nz-divider nzType="vertical"></nz-divider>
+
+<br>
+<br>
+<h4>状态管理</h4>
+<button (click)="up()">+1</button>  {{(counter | async).count}} <button (click)="down()">-1</button>
 <router-outlet></router-outlet>
 <div nz-row>
   <div nz-col nzSpan="12">

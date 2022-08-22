@@ -1024,6 +1024,36 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@ngrx/effects@8":
+  version "8.6.1"
+  resolved "https://registry.npmmirror.com/@ngrx/effects/-/effects-8.6.1.tgz#6038a5e9cc3db27fdea4cfbcc6e2ae63721e8a26"
+  integrity sha512-nvokfJ+LXez3DuAVSWW4w/eMrjPoSpzyHSToIVbDTVIF4JZ3g8fKdi9aHYAeXy2MDR1BaV7zMTmM9w6J0TDZtw==
+
+"@ngrx/entity@8":
+  version "8.6.1"
+  resolved "https://registry.npmmirror.com/@ngrx/entity/-/entity-8.6.1.tgz#8b227746c1009adcf172a205aec30b416222428a"
+  integrity sha512-hfwWxAthKKL9d+7IjUpQ0pAPIdjuGlLQD6/wHNb+w9MmqlCwY15ggdHc5hgr2Zd/+XJO1qRqOekKSQQRZC8bXQ==
+
+"@ngrx/router-store@8":
+  version "8.6.1"
+  resolved "https://registry.npmmirror.com/@ngrx/router-store/-/router-store-8.6.1.tgz#b631f8d6d2b7204ab3396b9d678f0134c674fe3d"
+  integrity sha512-WOFSpxfaePoFu6gYJbXs7vBH8YG/m27ySeN9jBmlO94CkwWN9w3XXQebMVu47EoKO+YpMlF2l2Ifakhefq0TWQ==
+
+"@ngrx/schematics@8":
+  version "8.6.1"
+  resolved "https://registry.npmmirror.com/@ngrx/schematics/-/schematics-8.6.1.tgz#40f25735d74b283a539a74d811d47ba8fdf58377"
+  integrity sha512-2IRoudd0iSHOVMk4waXJmw9JtZM7x0tX6afZQdI/AGaoRj05PzjPPIipXTp9L/pKMByoE7hfAloXWxiBY7w4QQ==
+
+"@ngrx/store-devtools@8":
+  version "8.6.1"
+  resolved "https://registry.npmmirror.com/@ngrx/store-devtools/-/store-devtools-8.6.1.tgz#6fea7ba2544a35f606ccaa3c3be5251fece65b71"
+  integrity sha512-rWW8FMKgb3paKmlhS8T/T3Sjm4w2WiQAOKU2cXy8D4ZrGTrFhaZDxHsn7eo+l3AN1EMXQh/w/eNLpevtCrO/wg==
+
+"@ngrx/store@8":
+  version "8.6.1"
+  resolved "https://registry.npmmirror.com/@ngrx/store/-/store-8.6.1.tgz#ee4c7d3b8bcc59cf042ae76e6743130408e9b2d8"
+  integrity sha512-bV7X0hNywd6N5YroWdZffIEvLKdHZo/l4tCK9FC/o5OezVyPRKZ6QVHz8e2jnLvqj55XzOJNR/tsYh4iuVi2pg==
+
 "@ngtools/webpack@8.3.29":
   version "8.3.29"
   resolved "https://registry.npmmirror.com/@ngtools/webpack/-/webpack-8.3.29.tgz#7b6984cdccd633dd687e9413a89a2d9e1360f76c"

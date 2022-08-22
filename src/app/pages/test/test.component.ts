@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { select, State, Store } from '@ngrx/store'
 import {
   BehaviorSubject,
   concat,
@@ -42,6 +43,9 @@ import {
   throttleTime,
   toArray,
 } from 'rxjs/operators'
+import { AppState } from 'src/app/store'
+import { decrement, increment } from 'src/app/store/actions/counter.actions'
+import { CounterState } from 'src/app/store/reducers/counter.reducer'
 
 @Component({
   selector: 'app-test',
@@ -49,11 +53,14 @@ import {
   styleUrls: ['./test.component.less'],
 })
 export class TestComponent implements OnInit {
-  constructor() {}
+  constructor(private store:Store<AppState>) {}
+  counter:Observable<CounterState>
   obMsg = new Date()
   sub: Subscription = null
   ob: Observable<any> = null
   ngOnInit() {
+    // this.store.pipe(select("counter")).subscribe(console.log)
+    this.counter = this.store.pipe(select("counter"))
     this.loadData()
     // this.subjectSub()
     // this.behaviorSub()
@@ -335,4 +342,13 @@ export class TestComponent implements OnInit {
     //   .pipe(switchMap(ev => interval(1000)))
     //   .subscribe(x => console.log(x))
   }
+
+  // 状态管理
+  up(){
+    this.store.dispatch(increment())
+  }
+  down(){
+    this.store.dispatch(decrement())
+  }
+
 }
