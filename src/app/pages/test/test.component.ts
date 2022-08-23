@@ -33,6 +33,7 @@ import {
   last,
   map,
   mapTo,
+  mergeAll,
   mergeMap,
   pluck,
   retry,
@@ -44,8 +45,10 @@ import {
   toArray,
 } from 'rxjs/operators'
 import { AppState } from 'src/app/store'
-import { decrement, increment } from 'src/app/store/actions/counter.actions'
+import { decrement, decrement_num, increment, increment_async, increment_num } from 'src/app/store/actions/counter.actions'
 import { CounterState } from 'src/app/store/reducers/counter.reducer'
+import { selectCount } from 'src/app/store/selectors/counter.selectors'
+import { selectQueryParams, selectRouteParam, selectRouteParams } from 'src/app/store/selectors/router.selector'
 
 @Component({
   selector: 'app-test',
@@ -53,15 +56,22 @@ import { CounterState } from 'src/app/store/reducers/counter.reducer'
   styleUrls: ['./test.component.less'],
 })
 export class TestComponent implements OnInit {
-  constructor(private store:Store<AppState>) {}
-  counter:Observable<CounterState>
+  constructor(private store: Store<AppState>) {}
+  counter: Observable<number>
   obMsg = new Date()
   sub: Subscription = null
   ob: Observable<any> = null
   ngOnInit() {
-    // this.store.pipe(select("counter")).subscribe(console.log)
-    this.counter = this.store.pipe(select("counter"))
-    this.loadData()
+    // 操作符来处理
+    // this.counter = this.store.pipe(
+    //   select<AppState, 'counter'>('counter'),
+    //   map(v => v.count),
+    // )
+    // 内置方法处理
+    this.counter = this.store.pipe(select(selectCount))
+    this.store.pipe(select(selectQueryParams)).subscribe(item => console.log(item))
+
+    // this.loadData()
     // this.subjectSub()
     // this.behaviorSub()
     // this.replaySub()
@@ -230,12 +240,12 @@ export class TestComponent implements OnInit {
     // map 常规map
     // mapTo 不关心原来的值，直接返回给定的值
     // filter 常规过滤
-    of(1, 2, 3)
-      .pipe(map(v => v * 10))
-      .pipe(map(v => v + 1))
-      .pipe(filter(v => v % 2 === 0))
-      // .pipe(mapTo('成功'))
-      .subscribe(console.log)
+    // of(1, 2, 3)
+    //   .pipe(map(v => v * 10))
+    //   .pipe(map(v => v + 1))
+    //   .pipe(filter(v => v % 2 === 0))
+    //   // .pipe(mapTo('成功'))
+    //   .subscribe(console.log)
     // pluck 摘去对象中的属性值
     // from([{ name: '张三' }, { a: { b: 3 } }])
     //   // .pipe(pluck('name'))
@@ -245,7 +255,6 @@ export class TestComponent implements OnInit {
     // interval(1000)
     //   .pipe(mapTo([1, 2, 3]), first())
     //   .subscribe(console.log)
-
     // startWith 给数据源前面+一个默认值
     // of(100, 200, 300)
     // interval(1000)
@@ -256,15 +265,12 @@ export class TestComponent implements OnInit {
     //     first(v => v === 105)
     //   )
     //   .subscribe(console.log)
-
     // every
     // range(1, 5)
     //   .pipe(every(v => v > 5))
     //   .subscribe(console.log)
-
     // delay、
     // delayWhen : 对上一环节的操作进行延迟，上一环节发出多少数据流，传入的回调函数就会执行多次。
-
     // from([1, 2, 3])
     //   .pipe(
     //     tap(v => console.log('延时1s')),
@@ -282,13 +288,10 @@ export class TestComponent implements OnInit {
     //     })
     //   )
     //   .subscribe(console.log)
-
     // take  takeWhile  takeUtil  : 拿前面几个元素，不要后面的
     // skip skipWhile skipUtil  ： 跳过几个元素，获取后面的
-
     // last
     // interval(1000).pipe(take(5), last()).subscribe(console.log)
-
     // concatAll: 有时 Observable 发出的又是一个 Obervable，concatAll 的作用就是将新的可观察对象和数据源进行合并
     // concatMap: 返回一个observable数组
     // fromEvent(document, 'click')
@@ -306,29 +309,48 @@ export class TestComponent implements OnInit {
     // const clicks = fromEvent(document, 'click')
     // const result = clicks.pipe(concatMap(ev => interval(1000).pipe(take(4))))
     // result.subscribe(x => console.log(x))
-
     // reduce：对数数据进行累计操作。reduce 会等待数据源中的数据流发送完成后再执行，
     // scan : 类似reduce，但执行时机不同，数据源每次发出数据流 scan 都会执行
-    // mergeMap：
+    // mergeAll
+    // fromEvent(document, 'click')
+    //   .pipe(
+    //     map(() => interval(1000)),
+    //     mergeAll()
+    //   )
+    //   .subscribe(console.log)
+    /**
+     * map: 对发出的数据进行简单的处理（转换）（单个观察对象）
+     * mergeAll：对前面的一个或多个观察对象 合并输出
+     * mergeMap：交叉合并可观察对象  以后  对可观察对象发出的数据流进行转换。
+     *  */
+    // map
+    // of('a', 'b', 'c')
+    // .pipe(map(i => 'jty' + i))
+    //   .subscribe(x => console.log(x))
+    // mergeAll
+    // of('a', 'b', 'c')
+    //   .pipe(
+    //     map(x => interval(5000).pipe(map(i => x + i))),
+    //     mergeAll()
+    //   )
+    //   .subscribe(x => console.log(x))
+    // mergeMap
     // of('a', 'b', 'c')
     //   .pipe(mergeMap(x => interval(5000).pipe(map(i => x + i))))
+    //   // .pipe(mergeMap(x => interval(5000)))
     //   .subscribe(x => console.log(x))
-
     // throttleTime : 节流
     // fromEvent(document, 'click')
     //   .pipe(throttleTime(2000))
     //   .subscribe(x => console.log(x))
-
     // debounceTime ： 防抖
     // fromEvent(document, 'click')
     //   .pipe(debounceTime(1000))
     //   .subscribe(x => console.log(x))
-
     // distinctUntilChanged ： 检测这次数据流和上次是否一样，一样就去掉
     // of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4)
     //   .pipe(distinctUntilChanged())
     //   .subscribe(x => console.log(x)) // 1, 2, 1, 2, 3, 4
-
     // groupBy : 分组
     // of({ name: 'Sue', age: 25 }, { name: 'Joe', age: 30 }, { name: 'Frank', age: 25 }, { name: 'Sarah', age: 35 })
     //   .pipe(
@@ -336,7 +358,6 @@ export class TestComponent implements OnInit {
     //     mergeMap(group => group.pipe(toArray()))
     //   )
     //   .subscribe(console.log)
-
     // switchMap  : 切换到下一个订阅源
     // fromEvent(document, 'click')
     //   .pipe(switchMap(ev => interval(1000)))
@@ -344,11 +365,13 @@ export class TestComponent implements OnInit {
   }
 
   // 状态管理
-  up(){
-    this.store.dispatch(increment())
+  up(num?) {
+    num ? this.store.dispatch(increment_num({ num })) : this.store.dispatch(increment())
   }
-  down(){
-    this.store.dispatch(decrement())
+  upAsync(num) {
+    this.store.dispatch(increment_async({ num }))
   }
-
+  down(num?) {
+    num ? this.store.dispatch(decrement_num({ num })) : this.store.dispatch(decrement())
+  }
 }

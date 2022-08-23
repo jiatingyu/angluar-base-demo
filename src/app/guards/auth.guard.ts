@@ -29,7 +29,8 @@ export class AuthGuard implements CanActivate {
         return this.router.createUrlTree([resource[0].url])
       }
     } catch (error) {
-      return false
+      // 默认去登录页面
+      return this.router.createUrlTree(['/passport'])
     }
   }
 }

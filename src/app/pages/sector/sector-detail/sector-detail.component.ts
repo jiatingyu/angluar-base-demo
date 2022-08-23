@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { extend } from 'dayjs'
 import { NzMessageService } from 'ng-zorro-antd'
@@ -19,6 +19,7 @@ interface ItemData {
   gkcs: string
   trades: string
   gzdw: string
+  color: string
 }
 
 @Component({
@@ -78,6 +79,15 @@ export class SectorDetailComponent extends ResultHelper implements OnInit {
       color: [null],
       queryDate: [null],
     })
+    this.userForm = this.fb.group({
+      name: [null, Validators.required],
+      sex: ['男', Validators.required],
+      phoneNumber: [null, Validators.required],
+      idCard: [null, Validators.required],
+      gkcs: [null, Validators.required],
+      trades: [null, Validators.required],
+      gzdw: [null, Validators.required],
+    })
     let [err, data] = await this.requestHelper(this.main.getRate())
     if (!err) {
       this.rateArr = data
@@ -86,7 +96,7 @@ export class SectorDetailComponent extends ResultHelper implements OnInit {
   }
   pageObj = {
     page: 1,
-    size: 10,
+    size: 20,
     total: 0,
   }
   search() {
@@ -171,6 +181,29 @@ export class SectorDetailComponent extends ResultHelper implements OnInit {
     } catch (error) {
     } finally {
       this.downLoading = false
+    }
+  }
+
+  // 用户信息
+  userVisible = false
+  userForm: FormGroup
+  add() {
+    this.userVisible = true
+  }
+  async addHandle() {
+    for (const i in this.userForm.controls) {
+      this.userForm.controls[i].markAsDirty()
+      this.userForm.controls[i].updateValueAndValidity()
+    }
+    if (this.userForm.valid) {
+      let obj = this.userForm.value
+      let [err] = await this.requestHelper(this.main.operationSectorDetail(obj))
+      if (err) {
+        this.message.error(err)
+        return
+      }
+      this.loadData()
+      this.userVisible = false
     }
   }
 }

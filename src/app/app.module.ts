@@ -22,15 +22,18 @@ import { AnalysisComponent } from './pages/analysis/analysis.component'
 import { MessageTemplateComponent } from './pages/message-template/message-template.component'
 import { PersonComponent } from './pages/system-manage/person/person.component'
 import { RoleNamePipe } from './pipes/role-name.pipe'
-import { UserTypePipe } from './pipes/user-type.pipe' 
-import { ShareModule } from './share/share.module';
-import { TestComponent } from './pages/test/test.component';
-import { SectorDetailComponent } from './pages/sector/sector-detail/sector-detail.component';
-import { StoreModule } from '@ngrx/store'; 
-import { reducers, metaReducers } from './store';
+import { UserTypePipe } from './pipes/user-type.pipe'
+import { ShareModule } from './share/share.module'
+import { TestComponent } from './pages/test/test.component'
+import { SectorDetailComponent } from './pages/sector/sector-detail/sector-detail.component'
+import { StoreModule } from '@ngrx/store'
+import { reducers, metaReducers } from './store'
 
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { environment } from '../environments/environment'
+import { EffectsModule } from '@ngrx/effects'
+import { CounterEffects } from './store/effects/counter.effects'
+import { StoreRouterConnectingModule } from '@ngrx/router-store'
 registerLocaleData(zh)
 @NgModule({
   declarations: [
@@ -52,8 +55,17 @@ registerLocaleData(zh)
     // RoleNamePipe,
     // UserTypePipe,
   ],
-  imports: [BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, ShareModule, 
-    StoreModule.forRoot(reducers, { metaReducers }), !environment.production ? StoreDevtoolsModule.instrument() : []],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    ShareModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([CounterEffects]),
+    StoreRouterConnectingModule.forRoot(),
+  ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],
 })

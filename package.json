@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open --port 4200 --host 0.0.0.0 --hmrWarning false --disableHostCheck true",
-    "build": "ng build --prod -c=production --delete-output-path true",
+    "build": "ng build --prod -c=production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store'
-import { decrement, increment } from '../actions/counter.actions'
+import { decrement, decrement_num, increment, increment_num } from '../actions/counter.actions'
 // 唯一标示
 export const counterFeatureKey = 'counter'
 
@@ -16,7 +16,13 @@ export const reducer = createReducer(
   on(increment, state => {
     return { ...state, count: state.count + 1 }
   }),
+  on(increment_num, (state, action) => {
+    return { ...state, count: state.count + action.num }
+  }),
   on(decrement, state => {
     return { ...state, count: state.count - 1 }
+  }),
+  on(decrement_num, (state, action) => {
+    return { ...state, count: state.count - action.num }
   })
 )
